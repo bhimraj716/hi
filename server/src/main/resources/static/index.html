@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lego Robot Control Panel</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Lego Robot Control Panel</h1>
+        <div id="connection-status" class="status-indicator disconnected">
+            <span class="dot"></span>
+            <span id="status-text">Waiting for robot...</span>
+        </div>
+    </header>
+
+    <main>
+        <!-- Navigation Tabs -->
+        <nav class="tabs">
+            <button class="tab active" data-tab="control">Control</button>
+            <button class="tab" data-tab="behavior">Behavior</button>
+            <button class="tab" data-tab="telemetry">Live Data</button>
+            <button class="tab" data-tab="statistics">Statistics</button>
+        </nav>
+
+        <!-- Control Tab -->
+        <section id="control" class="tab-content active">
+            <div class="card">
+                <h2>Drive Control</h2>
+                <div class="drive-buttons">
+                    <button id="btn-start" class="btn btn-green" onclick="setDriving(true)">START</button>
+                    <button id="btn-stop" class="btn btn-red" onclick="setDriving(false)">STOP</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Speed</h2>
+                <div class="slider-group">
+                    <input type="range" id="speed-slider" min="0" max="100" value="50"
+                           oninput="updateSpeedLabel(this.value)">
+                    <span id="speed-label" class="slider-value">50%</span>
+                </div>
+                <div style="display:flex;flex-direction:row;align-items:center;gap:1.5rem;">
+                    <button class="btn btn-blue" onclick="applySpeed()">Apply Speed</button>
+                    <label class="switch-label" style="margin:0;">
+                        <input type="checkbox" id="reverse-toggle" onchange="toggleReverse(this.checked)">
+                        <span class="switch-slider"></span>
+                        Reverse
+                    </label>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Steering</h2>
+                <div class="slider-group">
+                    <label>Left</label>
+                    <input type="range" id="turn-slider" min="-180" max="180" value="0"
+                           oninput="updateTurnLabel(this.value)">
+                    <label>Right</label>
+                    <span id="turn-label" class="slider-value">0&deg;</span>
+                </div>
+                <button class="btn btn-blue" onclick="applyTurn()">Apply Turn</button>
+                <button class="btn btn-gray" onclick="resetTurn()">Center</button>
+            </div>
+
+            <div class="card">
+                <h2>Track Following</h2>
+                <label class="switch-label">
+                    <input type="checkbox" id="track-toggle" onchange="toggleTrackFollowing(this.checked)">
+                    <span class="switch-slider"></span>
+                    Enable Line Tracking
+                </label>
+            </div>
+        </section>
+
+        <section id="behavior" class="tab-content">
+            <div class="card">
+                <h2>Obstacle Detection</h2>
+                <div class="form-group">
+                    <label for="obstacle-distance">Detection Distance (cm):</label>
+                    <input type="number" id="obstacle-distance" min="5" max="100" value="25">
+                </div>
+                <div class="form-group">
+                    <label for="obstacle-action">Action when obstacle detected:</label>
+                    <select id="obstacle-action">
+                        <option value="STOP">Stop</option>
+                        <option value="TURN_LEFT">Turn Left</option>
+                        <option value="TURN_RIGHT">Turn Right</option>
+                        <option value="REVERSE">Reverse</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Black Line Detection</h2>
+                <div class="form-group">
+                    <label for="line-action">Action when black line detected:</label>
+                    <select id="line-action">
+                        <option value="IGNORE">Ignore</option>
+                        <option value="STOP">Stop</option>
+                        <option value="TURN_AROUND">Turn Around</option>
+                    </select>
+                </div>
+            </div>
+
+            <button class="btn btn-blue btn-wide" onclick="applyBehavior()">Save Behavior Settings</button>
+        </section>
+
+        <!-- Telemetry Tab -->
+        <section id="telemetry" class="tab-content">
+            <div class="card">
+                <h2>Current Robot Status</h2>
+                <div class="telemetry-grid">
+                    <div class="telemetry-item">
+                        <span class="telemetry-label">Status</span>
+                        <span id="t-status" class="telemetry-value">--</span>
+                    </div>
+                    <div class="telemetry-item">
+                        <span class="telemetry-label">Speed</span>
+                        <span id="t-speed" class="telemetry-value">--</span>
+                    </div>
+                    <div class="telemetry-item">
+                        <span class="telemetry-label">Ultrasonic (cm)</span>
+                        <span id="t-ultrasonic" class="telemetry-value">--</span>
+                    </div>
+                    <div class="telemetry-item">
+                        <span class="telemetry-label">Color Sensor</span>
+                        <span id="t-color" class="telemetry-value">--</span>
+                    </div>
+                    <div class="telemetry-item">
+                        <span class="telemetry-label">On Line</span>
+                        <span id="t-online" class="telemetry-value">--</span>
+                    </div>
+                    <div class="telemetry-item">
+                        <span class="telemetry-label">Obstacle</span>
+                        <span id="t-obstacle" class="telemetry-value">--</span>
+                    </div>
+                    <div class="telemetry-item">
+                        <span class="telemetry-label">Left Motor</span>
+                        <span id="t-left-motor" class="telemetry-value">--</span>
+                    </div>
+                    <div class="telemetry-item">
+                        <span class="telemetry-label">Right Motor</span>
+                        <span id="t-right-motor" class="telemetry-value">--</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Speed History</h2>
+                <canvas id="speed-chart" width="600" height="200"></canvas>
+            </div>
+
+            <div class="card">
+                <h2>Telemetry Log</h2>
+                <div id="telemetry-log" class="log-container">
+                    <p class="log-empty">No telemetry data yet.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Statistics Tab -->
+        <section id="statistics" class="tab-content">
+            <div class="card">
+                <h2>Performance Statistics</h2>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-value" id="s-avg-speed">0</span>
+                        <span class="stat-label">Avg Speed (%)</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="s-total-readings">0</span>
+                        <span class="stat-label">Total Readings</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="s-obstacles">0</span>
+                        <span class="stat-label">Obstacles Detected</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="s-online-pct">0%</span>
+                        <span class="stat-label">On-Line Time</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="s-offline-pct">0%</span>
+                        <span class="stat-label">Off-Line Time</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="s-line-readings">0</span>
+                        <span class="stat-label">Line Readings</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Current Settings</h2>
+                <table id="settings-table">
+                    <thead>
+                        <tr><th>Parameter</th><th>Value</th></tr>
+                    </thead>
+                    <tbody id="settings-body">
+                    </tbody>
+                </table>
+            </div>
+
+            <button class="btn btn-blue btn-wide" onclick="refreshStatistics()">Refresh Statistics</button>
+        </section>
+    </main>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>
