@@ -1,0 +1,388 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: #f0f2f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* === Header === */
+header {
+    background: #2c3e50;
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+header h1 {
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+}
+
+.status-indicator .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.status-indicator.disconnected .dot { background: #e74c3c; }
+.status-indicator.connected .dot { background: #2ecc71; }
+
+/* === Navigation Tabs === */
+.tabs {
+    display: flex;
+    background: #fff;
+    border-bottom: 2px solid #e0e0e0;
+    padding: 0 1rem;
+}
+
+.tab {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: #666;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+}
+
+.tab:hover { color: #2c3e50; }
+
+.tab.active {
+    color: #2c3e50;
+    border-bottom-color: #3498db;
+    font-weight: 600;
+}
+
+/* === Main Content === */
+main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.tab-content {
+    display: none;
+    padding: 1rem 0;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* === Cards === */
+.card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.card h2 {
+    font-size: 1.1rem;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+/* === Buttons === */
+.btn {
+    padding: 0.6rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    color: white;
+}
+
+.btn:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+
+.btn-green { background: #27ae60; }
+.btn-red { background: #e74c3c; }
+.btn-blue { background: #3498db; }
+.btn-gray { background: #95a5a6; }
+.btn-wide { width: 100%; padding: 0.8rem; font-size: 1rem; }
+
+.drive-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.drive-buttons .btn {
+    flex: 1;
+    padding: 1rem;
+    font-size: 1.2rem;
+    max-width: 200px;
+}
+
+/* === Sliders === */
+.slider-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.slider-group input[type="range"] {
+    flex: 1;
+    height: 6px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: #ddd;
+    border-radius: 3px;
+    outline: none;
+}
+
+.slider-group input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #3498db;
+    cursor: pointer;
+}
+
+.slider-value {
+    min-width: 50px;
+    text-align: center;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+/* === Form Elements === */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-weight: 500;
+    color: #555;
+}
+
+.form-group select,
+.form-group input[type="number"] {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    background: #fafafa;
+}
+
+/* === Toggle Switch === */
+.switch-label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.switch-label input { display: none; }
+
+.switch-slider {
+    position: relative;
+    width: 48px;
+    height: 26px;
+    background: #ccc;
+    border-radius: 13px;
+    transition: background 0.2s;
+}
+
+.switch-slider::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 50%;
+    transition: transform 0.2s;
+}
+
+.switch-label input:checked + .switch-slider {
+    background: #27ae60;
+}
+
+.switch-label input:checked + .switch-slider::after {
+    transform: translateX(22px);
+}
+
+/* === Telemetry Grid === */
+.telemetry-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 0.75rem;
+}
+
+.telemetry-item {
+    background: #f8f9fa;
+    border-radius: 6px;
+    padding: 0.75rem;
+    text-align: center;
+}
+
+.telemetry-label {
+    display: block;
+    font-size: 0.8rem;
+    color: #888;
+    margin-bottom: 0.25rem;
+}
+
+.telemetry-value {
+    display: block;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #2c3e50;
+}
+
+/* === Statistics Grid === */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.stat-value {
+    display: block;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #3498db;
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 0.25rem;
+}
+
+/* === Table === */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 0.6rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+th {
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #555;
+}
+
+/* === Log Container === */
+.log-container {
+    max-height: 300px;
+    overflow-y: auto;
+    font-family: monospace;
+    font-size: 0.82rem;
+    background: #1e1e1e;
+    color: #d4d4d4;
+    padding: 0.75rem;
+    border-radius: 6px;
+}
+
+.log-empty {
+    color: #888;
+    text-align: center;
+    padding: 1rem;
+}
+
+.log-entry {
+    padding: 0.15rem 0;
+    border-bottom: 1px solid #333;
+}
+
+/* === Canvas (Chart) === */
+canvas {
+    width: 100% !important;
+    height: 200px !important;
+    background: #fafafa;
+    border-radius: 6px;
+}
+
+/* === Speed Controls (Apply + Reverse side by side) === */
+.speed-controls {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.reverse-control {
+    display: inline-flex;
+    align-items: center;
+}
+
+.speed-controls .btn {
+    flex-shrink: 0;
+}
+
+/* === Footer === */
+footer {
+    text-align: center;
+    padding: 1.5rem;
+    color: #999;
+    font-size: 0.85rem;
+}
+
+/* === Responsive === */
+@media (max-width: 600px) {
+    header {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .tabs {
+        overflow-x: auto;
+    }
+    .tab {
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+    }
+    .telemetry-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
